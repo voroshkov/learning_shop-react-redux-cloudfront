@@ -33,7 +33,7 @@ export default function Header() {
             underline="none"
             to="/"
           >
-            My Store!
+            AV AWS Learn Store
           </Link>
         </Typography>
 
