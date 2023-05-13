@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "~/components/App/App";
@@ -17,6 +18,26 @@ const queryClient = new QueryClient({
 if (import.meta.env.DEV) {
   const { worker } = await import("./mocks/browser");
   worker.start({ onUnhandledRequest: "bypass" });
+}
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const { status } = error.response;
+    if (status === 401) {
+      alert(`Current operation requires authorization`);
+    }
+    if (status === 403) {
+      alert(`You are not authorized to perform this operation`);
+    }
+    return Promise.reject(error.response);
+  }
+);
+
+if (!localStorage.getItem("authorization_token")) {
+  localStorage.setItem(
+    "authorization_token",
+    "VmljdG9yQmVsaWtvdjpURVNUX1BBU1NXT1JE"
+  );
 }
 
 const container = document.getElementById("app");
